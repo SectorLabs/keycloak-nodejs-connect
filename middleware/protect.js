@@ -31,7 +31,7 @@ function forceLogin (keycloak, request, response) {
   }
 
   let uuid = UUID();
-  let loginURL = keycloak.loginUrl(uuid, redirectUrl);
+  let loginURL = (request.keycloakConfig.action === "register") ? keycloak.registerUrl(redirectUrl) : keycloak.loginUrl(uuid, redirectUrl);
   response.redirect(loginURL);
 }
 
@@ -49,6 +49,12 @@ module.exports = function (keycloak, spec) {
   }
 
   return function protect (request, response, next) {
+    if (request.route.path) {
+      request.keycloakConfig = {
+        action : request.route.path.replace(/^\/|\/$/g, '')
+      };
+    }
+    
     if (request.kauth && request.kauth.grant) {
       if (!guard || guard(request.kauth.grant.access_token, request, response)) {
         return next();
