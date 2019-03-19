@@ -16,6 +16,7 @@
 'use strict';
 
 const UUID = require('./../uuid');
+const R = require("ramda");
 
 function forceLogin (keycloak, request, response) {
   let host = request.hostname;
@@ -31,7 +32,15 @@ function forceLogin (keycloak, request, response) {
   }
 
   let uuid = UUID();
-  let loginURL = keycloak.loginUrl(uuid, redirectUrl);
+  let loginURL;
+  const REGISTER_ACTION = "register";
+
+  if (R.path(["keycloakConfig", "action"], request) === REGISTER_ACTION) {
+    loginURL = keycloak.registerUrl(redirectUrl);
+  } else {
+    loginURL = keycloak.loginUrl(uuid, redirectUrl);
+  }
+  
   response.redirect(loginURL);
 }
 

@@ -386,6 +386,17 @@ Keycloak.prototype.loginUrl = function (uuid, redirectUrl) {
   return url;
 };
 
+Keycloak.prototype.registerUrl = function (redirectUrl) {
+  var url = this.config.realmUrl +
+  '/protocol/openid-connect/registrations' +
+  '?client_id=' + encodeURIComponent(this.config.clientId) +
+  '&redirect_uri=' + encodeURIComponent(redirectUrl) +
+  '&scope=' + encodeURIComponent(this.config.scope ? 'openid ' + this.config.scope : 'openid') +
+  '&response_type=code';
+
+  return url;
+};
+
 Keycloak.prototype.logoutUrl = function (redirectUrl) {
   return this.config.realmUrl +
   '/protocol/openid-connect/logout' +

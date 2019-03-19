@@ -32,7 +32,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "jwk-to-pem": "^2.0.0"
+    "jwk-to-pem": "^2.0.0",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "axios": "^0.18.0",
